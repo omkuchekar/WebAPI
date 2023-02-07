@@ -2,9 +2,9 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "docker-image" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "docker-image" ]
 
 jobs:
 
@@ -13,6 +13,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+    - name: Build and push Docker image
+      uses: mr-smithers-excellent/docker-build-push@v5
+      with:
+          image: omkuchekar/githubtest
+          registry: docker.io
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      
